@@ -31,6 +31,17 @@ Use evil
 (evil-mode 1)
 #+END_SRC
 
+** Relatative line numbers
+#+BEGIN_SRC emacs-lisp
+(require 'linum-relative)
+(linum-mode)
+#+END_SRC 
+
+** Powerline
+#+BEGIN_SRC emacs-lisp
+(require 'powerline)
+(powerline-default-theme)
+#+END_SRC 
 * org mode 
 
 #+BEGIN_SRC emacs-lisp
