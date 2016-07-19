@@ -66,7 +66,7 @@ Disable Evil in terminal.
 (evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
 
-* Custom solarized-dark theme
+* Custom solarized-light theme
 #+BEGIN_SRC emacs-lisp
 (when window-system
   (setq solarized-use-variable-pitch nil)
@@ -75,7 +75,7 @@ Disable Evil in terminal.
   (setq solarized-height-plus-3 1.0)
   (setq solarized-height-plus-4 1.0)
   (setq solarized-high-contrast-mode-line t)
-  (load-theme 'solarized-dark t))
+  (load-theme 'solarized-light t))
 #+END_SRC
 
 * Highlight the current line
