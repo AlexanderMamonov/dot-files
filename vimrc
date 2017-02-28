@@ -21,9 +21,16 @@ set hidden        " hide buffers instead of closing them this
                   " to background without bein written; and
 
 set relativenumber
-
+set nowrap
 set history=1000
 set undolevels=1000
+
+"
+" Highlight current line
+"
+color desert
+set cursorline
+hi CursorLine term=bold cterm=bold guibg=Grey40
 
 "
 " Search
@@ -46,7 +53,6 @@ map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
 "build and rebuild
 map <F5> :make <CR>
 map <C-F5> :!make clobber; make <CR>
-
 
 set nobackup
 set noswapfile

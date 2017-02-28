@@ -1,3 +1,6 @@
+* Ideas Sources
+** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
+
 * other
 #+BEGIN_SRC emacs-lisp
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
@@ -18,14 +21,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
+(prefer-coding-system 'utf-8)
 (require 'package)
 (package-initialize)
 #+END_SRC
 
 * evil-mode
 Use evil
-
 #+BEGIN_SRC emacs-lisp
 (require 'evil)
 (evil-mode 1)
@@ -54,6 +56,13 @@ Use evil
 (require 'powerline-evil)
 #+END_SRC
 
+* CEDET mode
+#+BEGIN_SRC emacs-lisp
+(semantic-mode 1)
+
+(global-ede-mode 1)
+#+END_SRC
+
 * Terminal
 Use a login shell
 #+BEGIN_SRC emacs-lisp
@@ -66,7 +75,8 @@ Disable Evil in terminal.
 (evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
 
-* Custom solarized-dark theme
+* Look and Feel
+** Custom solarized-light theme
 #+BEGIN_SRC emacs-lisp
 (when window-system
   (setq solarized-use-variable-pitch nil)
@@ -75,17 +85,24 @@ Disable Evil in terminal.
   (setq solarized-height-plus-3 1.0)
   (setq solarized-height-plus-4 1.0)
   (setq solarized-high-contrast-mode-line t)
-  (load-theme 'solarized-dark t))
+  (load-theme 'solarized-light t))
+#+END_SRC
+** Disable scrollbar
+#+BEGIN_SRC emacs-lisp
+(toggle-scroll-bar -1)
+#+END_SRC
+** Disable toolbar
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
 #+END_SRC
 
-* Highlight the current line
+** Highlight the current line
 #+BEGIN_SRC emacs-lisp
 (when window-system
   (global-hl-line-mode))
 #+END_SRC
-* Set default font and configure font resizing
+** Set default font and configure font resizing
 
-This configuration taken here https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
 
 
 #+BEGIN_SRC emacs-lisp
@@ -124,4 +141,16 @@ This configuration taken here https://github.com/hrs/dotfiles/blob/master/emacs.
 (define-key global-map (kbd "C-=") 'hrs/increase-font-size)
 (define-key global-map (kbd "C-_") 'hrs/decrease-font-size)
 (define-key global-map (kbd "C--") 'hrs/decrease-font-size)
+#+END_SRC
+
+* Programming
+** C\C++
+*** Indents
+#+BEGIN_SRC emacs-lisp
+(setq-default c-basic-offset 3
+              indent-tabs-mode nil)
+#+END_SRC
+*** Style
+#+BEGIN_SRC emacs-lisp
+(setq-default c-default-style "linux")
 #+END_SRC
