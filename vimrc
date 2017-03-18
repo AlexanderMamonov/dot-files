@@ -60,3 +60,19 @@ set noswapfile
 " use ; instead of :
 nnoremap ; :
 inoremap <TAB> <ESC>
+
+" for ctrlp plugin
+" http://ctrlpvim.github.io/ctrlp.vim/#installation
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
+" cscope
+"
+set cscopetag
+
+"
+" hard mode
+"
+noremap <Up>    <NOP>
+noremap <Down>  <NOP>
+noremap <Left>  <NOP>
+noremap <Right> <NOP>
