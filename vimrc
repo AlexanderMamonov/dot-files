@@ -73,6 +73,22 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 
+
+"
+" Plugins
+"
+
+"
+"" powerline
+"
+set laststatus=2 " show status line always
+set noshowmode   " disable mode message on the last line
+set t_Co=256     " number of colors
+
+"
+" Key bindings
+"
+
 "search word under cursor in code"
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
 "build and rebuild
