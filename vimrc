@@ -46,7 +46,32 @@ set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase,
                   "    case-sensitive otherwise
 
-"set statusline=2 " show statusline always
+
+"
+" Vundle
+" Plugin manager
+" https://github.com/VundleVim/Vundle.vim
+"
+
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+   " alternatively, pass a path where Vundle should install plugins
+   "call vundle#begin('~/some/path/here')
+
+   " let Vundle manage Vundle, required
+   Plugin 'VundleVim/Vundle.vim'
+
+   Plugin 'git://github.com/powerline/powerline.git', {'rtp': 'powerline/bindings/vim/'}
+
+   Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+
+
+   " All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 
 "search word under cursor in code"
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
@@ -61,10 +86,7 @@ set noswapfile
 nnoremap ; :
 inoremap <TAB> <ESC>
 
-" for ctrlp plugin
-" http://ctrlpvim.github.io/ctrlp.vim/#installation
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-
+"
 " cscope
 "
 set cscopetag
