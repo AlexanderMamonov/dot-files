@@ -21,9 +21,16 @@ set hidden        " hide buffers instead of closing them this
                   " to background without bein written; and
 
 set relativenumber
-
+set nowrap
 set history=1000
 set undolevels=1000
+
+"
+" Highlight current line
+"
+color desert
+set cursorline
+hi CursorLine term=bold cterm=bold guibg=Grey40
 
 "
 " Search
@@ -39,7 +46,48 @@ set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase,
                   "    case-sensitive otherwise
 
-"set statusline=2 " show statusline always
+
+"
+" Vundle
+" Plugin manager
+" https://github.com/VundleVim/Vundle.vim
+"
+
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+   " alternatively, pass a path where Vundle should install plugins
+   "call vundle#begin('~/some/path/here')
+
+   " let Vundle manage Vundle, required
+   Plugin 'VundleVim/Vundle.vim'
+
+   Plugin 'git://github.com/powerline/powerline.git', {'rtp': 'powerline/bindings/vim/'}
+
+   Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
+
+
+   " All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+
+"
+" Plugins
+"
+
+"
+"" powerline
+"
+set laststatus=2 " show status line always
+set noshowmode   " disable mode message on the last line
+set t_Co=256     " number of colors
+
+"
+" Key bindings
+"
 
 "search word under cursor in code"
 map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
@@ -47,10 +95,22 @@ map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
 map <F5> :make <CR>
 map <C-F5> :!make clobber; make <CR>
 
-
 set nobackup
 set noswapfile
 
 " use ; instead of :
 nnoremap ; :
 inoremap <TAB> <ESC>
+
+"
+" cscope
+"
+set cscopetag
+
+"
+" hard mode
+"
+noremap <Up>    <NOP>
+noremap <Down>  <NOP>
+noremap <Left>  <NOP>
+noremap <Right> <NOP>
