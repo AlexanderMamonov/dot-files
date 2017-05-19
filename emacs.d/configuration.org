@@ -1,3 +1,7 @@
+#+BEGIN_SRC emacs-lisp
+; template
+#+END_SRC
+
 * Ideas Sources
 ** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
 
@@ -45,7 +49,6 @@ Use evil
 (powerline-default-theme)
 #+END_SRC 
 * org mode 
-
 #+BEGIN_SRC emacs-lisp
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -54,6 +57,16 @@ Use evil
 (define-key global-map "\C-ca" 'org-agenda)
 (require 'powerline)
 (require 'powerline-evil)
+#+END_SRC
+
+** Commit org-mode files on save
+#+BEGIN_SRC emacs-lisp
+(defun org-sync ()
+   "Fix changes in commit"
+   (when (eq major-mode 'org-mode)
+      (shell-command "./sync.sh commit")))
+
+(add-hook 'after-save-hook #'org-sync)
 #+END_SRC
 
 * CEDET mode
@@ -103,11 +116,9 @@ Disable Evil in terminal.
   (global-hl-line-mode))
 #+END_SRC
 ** Set default font and configure font resizing
-
-
-
 #+BEGIN_SRC emacs-lisp
-(setq hrs/default-font "Inconsolata")
+;(setq hrs/default-font "Inconsolata")
+(setq hrs/default-font "Ubuntu Mono")
 (setq hrs/default-font-size 12)
 (setq hrs/current-font-size hrs/default-font-size)
 
@@ -142,9 +153,15 @@ Disable Evil in terminal.
 (define-key global-map (kbd "C-=") 'hrs/increase-font-size)
 (define-key global-map (kbd "C-_") 'hrs/decrease-font-size)
 (define-key global-map (kbd "C--") 'hrs/decrease-font-size)
+(hrs/reset-font-size)
 #+END_SRC
 
 * Programming
+** Racket
+https://github.com/greghendershott/racket-mode
+#+BEGIN_SRC emacs-lisp
+(require 'racket-mode)
+#+END_SRC
 ** C\C++
 *** Indents
 #+BEGIN_SRC emacs-lisp
