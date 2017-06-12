@@ -160,7 +160,7 @@ Disable Evil in terminal.
 ** Racket
 https://github.com/greghendershott/racket-mode
 #+BEGIN_SRC emacs-lisp
-(require 'racket-mode)
+;(require 'racket-mode)
 #+END_SRC
 ** C\C++
 *** Indents
