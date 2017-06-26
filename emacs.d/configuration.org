@@ -8,9 +8,6 @@
 
 * Initialize package archives
 #+BEGIN_SRC emacs-lisp
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/"))) 
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -27,11 +24,17 @@
  ;; If there is more than one, they won't work right.
  )
 (prefer-coding-system 'utf-8)
-(require 'package)
-(package-initialize)
 #+END_SRC
 
-
+* package
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(package-initialize)
+(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/"))) 
+;(package-refresh-contents)
+#+END_SRC
 * Look and Feel
 ** Custom solarized-light theme
 #+BEGIN_SRC emacs-lisp

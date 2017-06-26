@@ -7,4 +7,5 @@ function run {
   fi
 }
 
+run xxkb
 run setxkbmap -layout "us,ru" -option "grp:ctrl_shift_toggle"
