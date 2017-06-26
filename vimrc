@@ -13,7 +13,7 @@ set expandtab     " Expand TABs to spaces
 
 set cindent       " autoindent for C like syntax
 
-set number        " Display line number
+"set number        " Display line number
 set title         " change terminal's title
 
 set hidden        " hide buffers instead of closing them this

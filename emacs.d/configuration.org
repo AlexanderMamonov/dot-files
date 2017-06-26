@@ -5,7 +5,8 @@
 * Ideas Sources
 ** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
 
-* other
+
+* Initialize package archives
 #+BEGIN_SRC emacs-lisp
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                          ("org" . "http://orgmode.org/elpa/")
@@ -30,64 +31,6 @@
 (package-initialize)
 #+END_SRC
 
-* evil-mode
-Use evil
-#+BEGIN_SRC emacs-lisp
-(require 'evil)
-(evil-mode 1)
-#+END_SRC
-
-** Relatative line numbers
-#+BEGIN_SRC emacs-lisp
-;(require 'linum-relative)
-;(linum-mode)
-#+END_SRC 
-
-** Powerline
-#+BEGIN_SRC emacs-lisp
-(require 'powerline)
-(powerline-default-theme)
-#+END_SRC 
-* org mode 
-#+BEGIN_SRC emacs-lisp
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-(setq org-ellipsis "⤵")
-(define-key global-map "\C-ca" 'org-agenda)
-(require 'powerline)
-(require 'powerline-evil)
-#+END_SRC
-
-** Commit org-mode files on save
-#+BEGIN_SRC emacs-lisp
-(defun org-sync ()
-   "Fix changes in commit"
-   (when (eq major-mode 'org-mode)
-      (shell-command "./sync.sh commit")))
-
-(add-hook 'after-save-hook #'org-sync)
-#+END_SRC
-
-* CEDET mode
-#+BEGIN_SRC emacs-lisp
-(semantic-mode 1)
-
-(global-ede-mode 1)
-(global-semantic-idle-scheduler-mode 1)
-#+END_SRC
-
-* Terminal
-Use a login shell
-#+BEGIN_SRC emacs-lisp
-(setq multi-term-program-switches "--login")
-#+END_SRC
-
-Disable Evil in terminal.
-
-#+BEGIN_SRC emacs-lisp
-(evil-set-initial-state 'term-mode 'emacs)
-#+END_SRC
 
 * Look and Feel
 ** Custom solarized-light theme
@@ -101,20 +44,33 @@ Disable Evil in terminal.
   (setq solarized-high-contrast-mode-line t)
   (load-theme 'solarized-light t))
 #+END_SRC
+
+
 ** Disable scrollbar
 #+BEGIN_SRC emacs-lisp
 (toggle-scroll-bar -1)
 #+END_SRC
+
+
 ** Disable toolbar
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
 #+END_SRC
 
+
 ** Highlight the current line
 #+BEGIN_SRC emacs-lisp
+
 (when window-system
   (global-hl-line-mode))
+
+(defun disable-hl-line-mode ()
+   "disable current line hightligting"
+   (setq-local global-hl-line-mode nil))
+
 #+END_SRC
+
+
 ** Set default font and configure font resizing
 #+BEGIN_SRC emacs-lisp
 ;(setq hrs/default-font "Inconsolata")
@@ -156,22 +112,176 @@ Disable Evil in terminal.
 (hrs/reset-font-size)
 #+END_SRC
 
+
+* evil-mode
+Use evil
+#+BEGIN_SRC emacs-lisp
+(require 'evil)
+(evil-mode 1)
+#+END_SRC
+
+
+** Relatative line numbers
+#+BEGIN_SRC emacs-lisp
+(require 'linum-relative)
+(linum-mode)
+#+END_SRC 
+
+
+** Powerline
+#+BEGIN_SRC emacs-lisp
+(require 'powerline)
+(powerline-default-theme)
+#+END_SRC 
+
+
+* org mode 
+#+BEGIN_SRC emacs-lisp
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () 
+   (org-bullets-mode 1)
+   (limum-relative-off)))
+
+(setq org-ellipsis "⤵")
+(define-key global-map "\C-ca" 'org-agenda)
+(require 'powerline)
+(require 'powerline-evil)
+#+END_SRC
+
+
+** Commit org-mode files on save
+#+BEGIN_SRC emacs-lisp
+(defun org-sync ()
+   "Fix changes in commit"
+   (when (eq major-mode 'org-mode)
+      (shell-command "./sync.sh commit")))
+
+(add-hook 'after-save-hook #'org-sync)
+#+END_SRC
+
+
+* CEDET mode
+#+BEGIN_SRC emacs-lisp
+(semantic-mode 1)
+
+(global-ede-mode 1)
+(global-semantic-idle-scheduler-mode 1)
+#+END_SRC
+
+
+* Terminal
+*** Use a login shell
+#+BEGIN_SRC emacs-lisp
+(setq multi-term-program-switches "--login")
+#+END_SRC
+
+
+*** Disable highliting current line
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'term-mode-hook #'disable-hl-line-mode)
+(add-hook 'eshell-mode-hook #'disable-hl-line-mode)
+
+#+END_SRC
+
+
+*** Disable Evil in terminal.
+#+BEGIN_SRC emacs-lisp
+;(evil-set-initial-state 'term-mode 'emacs)
+#+END_SRC
+
+
 * Programming
 ** Racket
 https://github.com/greghendershott/racket-mode
 #+BEGIN_SRC emacs-lisp
 ;(require 'racket-mode)
 #+END_SRC
+
+
 ** C\C++
+How to make C++ ide in emacs
+http://tuhdo.github.io/c-ide.html
+
 *** Indents
 #+BEGIN_SRC emacs-lisp
 (setq-default c-basic-offset 3
               indent-tabs-mode nil)
 #+END_SRC
+
+
 *** Style
 #+BEGIN_SRC emacs-lisp
 (setq-default c-default-style "linux")
 #+END_SRC
+
+
+*** Autocompetion
+#+BEGIN_SRC emacs-lisp
+(require 'irony)
+
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+
+(require 'company)
+(add-hook 'c++-mode-hook 'company-mode)
+(add-hook 'c-mode-hook 'company-mode)
+
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+(require 'company-irony)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+
+
+;; ==========================================
+;; (optional) bind TAB for indent-or-complete
+;; ==========================================
+(defun irony--check-expansion ()
+(save-excursion
+  (if (looking-at "\\_>") t
+    (backward-char 1)
+    (if (looking-at "\\.") t
+      (backward-char 1)
+      (if (looking-at "->") t nil)))))
+(defun irony--indent-or-complete ()
+"Indent or Complete"
+(interactive)
+(cond ((and (not (use-region-p))
+            (irony--check-expansion))
+       (message "complete")
+       (company-complete-common))
+      (t
+       (message "indent")
+       (call-interactively 'c-indent-line-or-region))))
+(defun irony-mode-keys ()
+"Modify keymaps used by `irony-mode'."
+(local-set-key (kbd "TAB") 'irony--indent-or-complete)
+(local-set-key [tab] 'irony--indent-or-complete))
+(add-hook 'c-mode-common-hook 'irony-mode-keys)
+
+#+END_SRC
+
+
 * Experimental
 ** Switching buffers
 #+BEGIN_SRC emacs-lisp
