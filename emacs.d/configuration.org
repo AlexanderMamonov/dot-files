@@ -308,8 +308,10 @@ http://tuhdo.github.io/c-ide.html
   (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil) ; stop ido from suggesting when naming new file
 #+END_SRC
 
+
 * git
 https://github.com/magit/magit
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 #+END_SRC
