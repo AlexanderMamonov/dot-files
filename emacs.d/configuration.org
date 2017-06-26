@@ -2,11 +2,11 @@
 ; template
 #+END_SRC
 
-* Ideas Sources
+* ideas Sources
 ** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
 
 
-* Initialize package archives
+* custom variables
 #+BEGIN_SRC emacs-lisp
 
 (custom-set-variables
@@ -26,6 +26,7 @@
 (prefer-coding-system 'utf-8)
 #+END_SRC
 
+
 * package
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -35,7 +36,8 @@
                          ("gnu" . "http://elpa.gnu.org/packages/"))) 
 ;(package-refresh-contents)
 #+END_SRC
-* Look and Feel
+
+* look and feel
 ** Custom solarized-light theme
 #+BEGIN_SRC emacs-lisp
 (when window-system
@@ -305,6 +307,7 @@ http://tuhdo.github.io/c-ide.html
   (setq ido-default-buffer-method 'selected-window) ; use current pane for newly switched buffer
   (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil) ; stop ido from suggesting when naming new file
 #+END_SRC
+
 * git
 https://github.com/magit/magit
 #+BEGIN_SRC emacs-lisp
