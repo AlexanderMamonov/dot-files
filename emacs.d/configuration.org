@@ -223,6 +223,28 @@ http://tuhdo.github.io/c-ide.html
 
 
 
+*** Source code navigation using RTags
+I copy this configuration from here http://syamajala.github.io/c-ide.html
+
+rtags https://github.com/Andersbakken/rtags
+
+#+BEGIN_SRC emacs-lisp
+(require 'rtags)
+(require 'company-rtags)
+
+(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+
+(setq rtags-completions-enabled t)
+(eval-after-load 'company
+  '(add-to-list
+    'company-backends 'company-rtags))
+(setq rtags-autostart-diagnostics t)
+(rtags-enable-standard-keybindings)
+#+END_SRC
+
+
+
 
 * Experimental
 ** Switching buffers
