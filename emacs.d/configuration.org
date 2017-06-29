@@ -230,6 +230,7 @@ rtags https://github.com/Andersbakken/rtags
 
 #+BEGIN_SRC emacs-lisp
 (require 'rtags)
+(require 'company)
 (require 'company-rtags)
 
 (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
@@ -243,7 +244,27 @@ rtags https://github.com/Andersbakken/rtags
 (rtags-enable-standard-keybindings)
 #+END_SRC
 
+*** start rdm process
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+#+END_SRC
 
+
+
+*** Syntax checking
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c++-mode-hook 'flycheck-mode)
+(add-hook 'c-mode-hook 'flycheck-mode)
+(require 'flycheck-rtags)
+
+(defun my-flycheck-rtags-setup ()
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil))
+;; c-mode-common-hook is also called by c++-mode
+(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+#+END_SRC
 
 
 * Experimental
