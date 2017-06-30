@@ -52,7 +52,8 @@
 
 ** Disable scrollbar
 #+BEGIN_SRC emacs-lisp
-(toggle-scroll-bar -1)
+(when window-system
+  (toggle-scroll-bar -1))
 #+END_SRC
 
 
