@@ -58,7 +58,7 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
    " alternatively, pass a path where Vundle should install plugins
-   "call vundle#begin('~/some/path/here')
+   " call vundle#begin('~/some/path/here')
 
    " let Vundle manage Vundle, required
    Plugin 'VundleVim/Vundle.vim'
@@ -67,6 +67,9 @@ call vundle#begin()
 
    Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
 
+" Plugin 'https://github.com/Valloric/YouCompleteMe'
+
+   Plugin 'https://github.com/justmao945/vim-clang'
 
    " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -90,7 +93,7 @@ set t_Co=256     " number of colors
 "
 
 "search word under cursor in code"
-map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h" <Bar> cw<CR>
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **.cc **.h */*.cc */*.h" <Bar> cw<CR>
 "build and rebuild
 map <F5> :make <CR>
 map <C-F5> :!make clobber; make <CR>
