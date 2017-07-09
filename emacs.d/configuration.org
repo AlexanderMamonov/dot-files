@@ -291,6 +291,17 @@ rtags https://github.com/Andersbakken/rtags
 (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
 #+END_SRC
 
+*** Google C Code Style
+#+BEGIN_SRC emacs-lisp
+(require 'google-c-style)
+
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+
+;; If you want the RETURN key to go to the next line and space over
+;; to the right place, add this to your .emacs right after the load-file:
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+
+#+END_SRC
 
 * Experimental
 ** Switching buffers
