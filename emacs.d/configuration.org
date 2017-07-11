@@ -123,7 +123,6 @@
 (hrs/reset-font-size)
 #+END_SRC
 
-
 ** Disable startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-splash-screen t)
@@ -181,7 +180,6 @@ Use evil
 ** Notification
 #+BEGIN_SRC emacs-lisp
 (require 'org-alert)
-
 ;(org-alert-enable)
 (setq alert-default-style 'libnotify)
 #+END_SRC
