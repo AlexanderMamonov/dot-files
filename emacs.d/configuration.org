@@ -165,7 +165,13 @@ Use evil
 (add-hook 'after-save-hook #'org-sync)
 #+END_SRC
 
+** Notification
+#+BEGIN_SRC emacs-lisp
+(require 'org-alert)
 
+(org-alert-enable)
+(setq alert-default-style 'libnotify)
+#+END_SRC
 * CEDET mode
 #+BEGIN_SRC emacs-lisp
 (semantic-mode 1)
