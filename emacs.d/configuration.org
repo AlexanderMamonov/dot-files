@@ -35,7 +35,6 @@
 ;(package-refresh-contents)
 #+END_SRC
 
-
 * look and feel
 ** Custom solarized-light theme
 #+BEGIN_SRC emacs-lisp
@@ -74,6 +73,13 @@
    (setq-local global-hl-line-mode nil))
 
 #+END_SRC
+
+
+** powerline
+#+BEGIN_SRC emacs-lisp
+(require 'powerline)
+(require 'powerline-evil)
+#+END_SRC 
 
 
 ** Set default font and configure font resizing
@@ -147,8 +153,6 @@ Use evil
 
 (setq org-ellipsis "⤵")
 (define-key global-map "\C-ca" 'org-agenda)
-(require 'powerline)
-(require 'powerline-evil)
 #+END_SRC
 
 
@@ -162,6 +166,11 @@ Use evil
 (add-hook 'after-save-hook #'org-sync)
 #+END_SRC
 
+** Pomodoro Technique 
+#+BEGIN_SRC emacs-lisp
+(setq org-pomodoro-length 20)
+(define-key global-map "\C-cpom" 'org-pomodoro)
+#+END_SRC
 ** Notification
 #+BEGIN_SRC emacs-lisp
 (require 'org-alert)
