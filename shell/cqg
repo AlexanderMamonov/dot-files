@@ -1,0 +1,17 @@
+# CQG
+
+export TERM=xterm
+
+function compile_db() {
+   lnm
+   make clobber
+   intercept-build make
+}
+
+function make-tags(){
+   lnm
+   make clobber
+   make -nk | rc -c -
+   make clobber
+   rm Makefile
+}

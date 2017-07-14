@@ -123,6 +123,13 @@
 (hrs/reset-font-size)
 #+END_SRC
 
+
+** Disable startup screen
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
+#+END_SRC
+
 * evil-mode
 Use evil
 #+BEGIN_SRC emacs-lisp
@@ -149,7 +156,7 @@ Use evil
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () 
    (org-bullets-mode 1)
-   (limum-relative-off)))
+))
 
 (setq org-ellipsis "⤵")
 (define-key global-map "\C-ca" 'org-agenda)
@@ -175,8 +182,27 @@ Use evil
 #+BEGIN_SRC emacs-lisp
 (require 'org-alert)
 
-(org-alert-enable)
+;(org-alert-enable)
 (setq alert-default-style 'libnotify)
+#+END_SRC
+
+
+** Capture
+#+BEGIN_SRC emacs-lisp
+(define-key global-map "\C-cc" 'org-capture)
+(setq org-capture-templates
+      '(("i" "Inbox" entry (file+headline "~/Documents/org/gtd.org" "Inbox")
+             "* TODO %?\nEntered on %U\n")
+        ("n" "Note" entry (file "~/Documents/org/notes.org")
+             "* %?\nEntered on %U\n")))
+#+END_SRC
+** Projects
+#+BEGIN_SRC emacs-lisp
+(defun my-find-project-references ()
+"Find all references to current project"
+  (interactive)
+  (let ((query (concat "PARENT={." (org-id-copy) ".}")))
+    (org-tags-view "S" query)))
 #+END_SRC
 * CEDET mode
 #+BEGIN_SRC emacs-lisp
@@ -214,23 +240,36 @@ https://github.com/greghendershott/racket-mode
 ;(require 'racket-mode)
 #+END_SRC
 
-
 ** C\C++
 How to make C++ ide in emacs
 http://tuhdo.github.io/c-ide.html
 
-*** Indents
 #+BEGIN_SRC emacs-lisp
-(setq-default c-basic-offset 3
-              indent-tabs-mode nil)
+(require 'cc-mode)
 #+END_SRC
 
-
-*** Style
+*** Code Format
+clang-format-region doesn't work propertly.
+clang-format-buffer do too much changes.
+I'll use C-\ for formating current buffer
 #+BEGIN_SRC emacs-lisp
-(setq-default c-default-style "linux")
-#+END_SRC
+(require 'clang-format)
 
+(define-key c++-mode-map [(M-\\)] 'clang-format-buffer)
+(define-key c-mode-map [(M-\\)] 'clang-format-buffer)
+
+;(add-hook 'c-mode-common-hook (lambda ()
+;  (setq indent-region-function  'clang-format-region)
+;  ;(setq indent-line-function nil)
+;))
+;
+;(add-hook 'evil-normal-state-entry-hook (lambda ()
+;  (when (eq major-mode 'c++-mode) 
+;    (clang-format-buffer))))
+
+
+
+#+END_SRC
 
 *** Source code navigation using RTags
 I copy this configuration from here http://syamajala.github.io/c-ide.html
@@ -255,14 +294,11 @@ rtags https://github.com/Andersbakken/rtags
 (define-key c-mode-map [(M-right)] 'rtags-location-stack-forward)
 #+END_SRC
 
-
 *** start rdm process
 #+BEGIN_SRC emacs-lisp
 (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
 (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
 #+END_SRC
-
-
 
 *** competition
 #+BEGIN_SRC emacs-lisp
@@ -289,28 +325,16 @@ rtags https://github.com/Andersbakken/rtags
 
 *** Syntax checking
 #+BEGIN_SRC emacs-lisp
-(add-hook 'c++-mode-hook 'flycheck-mode)
-(add-hook 'c-mode-hook 'flycheck-mode)
-(require 'flycheck-rtags)
+;(add-hook 'c++-mode-hook 'flycheck-mode)
+;(add-hook 'c-mode-hook 'flycheck-mode)
+;(require 'flycheck-rtags)
 
 (defun my-flycheck-rtags-setup ()
   (flycheck-select-checker 'rtags)
   (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
   (setq-local flycheck-check-syntax-automatically nil))
 ;; c-mode-common-hook is also called by c++-mode
-(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
-#+END_SRC
-
-*** Google C Code Style
-#+BEGIN_SRC emacs-lisp
-(require 'google-c-style)
-
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-
-;; If you want the RETURN key to go to the next line and space over
-;; to the right place, add this to your .emacs right after the load-file:
-(add-hook 'c-mode-common-hook 'google-make-newline-indent)
-
+;(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
 #+END_SRC
 
 ** Literate Programming
@@ -340,6 +364,11 @@ rtags https://github.com/Andersbakken/rtags
   (setq ido-default-file-method 'selected-window) ; use current pane for newly opened file
   (setq ido-default-buffer-method 'selected-window) ; use current pane for newly switched buffer
   (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil) ; stop ido from suggesting when naming new file
+
+  (define-key global-map (kbd "M-f") 'ido-find-file)
+  (define-key global-map (kbd "M-b") 'ido-switch-buffer)
+  (define-key global-map (kbd "M-d") 'ido-dired)
+
 #+END_SRC
 
 * git

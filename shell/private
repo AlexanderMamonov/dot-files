@@ -1,0 +1,16 @@
+
+function hosts(){
+   sudo vim /etc/hosts
+}
+
+function zshcfg() {
+   vim ~/.zshrc
+   source ~/.zshrc
+}
+
+if [[ -n ${INSIDE_EMACS} ]]; then
+    promt walters
+    unsetopt zle
+fi
+
+alias e='vim'
