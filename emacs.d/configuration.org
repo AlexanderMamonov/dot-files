@@ -344,6 +344,14 @@ rtags https://github.com/Andersbakken/rtags
    (emacs-lisp . nil)
    ))
 #+END_SRC
+** D-Lang
+https://github.com/dlang-community/DCD
+https://github.com/tsukimizake/company-dcd
+
+#+BEGIN_SRC emacs-lisp
+(require 'd-mode)
+(require 'company-dcd)
+(add-hook 'd-mode-hook 'company-dcd-mode)
 * Experimental
 ** Switching buffers
 #+BEGIN_SRC emacs-lisp
