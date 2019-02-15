@@ -233,12 +233,6 @@ Use evil
 #+END_SRC
 
 * Programming
-** Racket
-https://github.com/greghendershott/racket-mode
-#+BEGIN_SRC emacs-lisp
-;(require 'racket-mode)
-#+END_SRC
-
 ** C\C++
 How to make C++ ide in emacs
 http://tuhdo.github.io/c-ide.html
