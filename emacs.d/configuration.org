@@ -233,103 +233,6 @@ Use evil
 #+END_SRC
 
 * Programming
-** C\C++
-How to make C++ ide in emacs
-http://tuhdo.github.io/c-ide.html
-
-#+BEGIN_SRC emacs-lisp
-(require 'cc-mode)
-#+END_SRC
-
-*** Code Format
-clang-format-region doesn't work propertly.
-clang-format-buffer do too much changes.
-I'll use C-\ for formating current buffer
-#+BEGIN_SRC emacs-lisp
-(require 'clang-format)
-
-(define-key c++-mode-map [(M-\\)] 'clang-format-buffer)
-(define-key c-mode-map [(M-\\)] 'clang-format-buffer)
-
-;(add-hook 'c-mode-common-hook (lambda ()
-;  (setq indent-region-function  'clang-format-region)
-;  ;(setq indent-line-function nil)
-;))
-;
-;(add-hook 'evil-normal-state-entry-hook (lambda ()
-;  (when (eq major-mode 'c++-mode) 
-;    (clang-format-buffer))))
-
-
-
-#+END_SRC
-
-*** Source code navigation using RTags
-I copy this configuration from here http://syamajala.github.io/c-ide.html
-
-rtags https://github.com/Andersbakken/rtags
-
-#+BEGIN_SRC emacs-lisp
-(require 'rtags)
-
-(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-
-(setq rtags-autostart-diagnostics t)
-(rtags-enable-standard-keybindings)
-#+END_SRC
-
-*** rtags key bindings
-#+BEGIN_SRC emacs-lisp
-(define-key c++-mode-map [(M-left)] 'rtags-location-stack-back)
-(define-key c-mode-map [(M-left)] 'rtags-location-stack-back)
-(define-key c++-mode-map [(M-right)] 'rtags-location-stack-forward)
-(define-key c-mode-map [(M-right)] 'rtags-location-stack-forward)
-#+END_SRC
-
-*** start rdm process
-#+BEGIN_SRC emacs-lisp
-(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-#+END_SRC
-
-*** competition
-#+BEGIN_SRC emacs-lisp
-(require 'company)
-(require 'company-rtags)
-(add-hook 'after-init-hook 'global-company-mode)
-
-(setq rtags-completions-enabled t)
-
-(eval-after-load 'company
-  '(add-to-list
-    'company-backends 'company-rtags))
-
-(setq company-idle-delay 0)
-(define-key c-mode-map [(tab)] 'company-complete)
-(define-key c++-mode-map [(tab)] 'company-complete)
-#+END_SRC
-
-*** enable helm intergration
-#+BEGIN_SRC emacs-lisp
-(require 'helm-rtags)
-(setq rtags-use-helm t)
-#+END_SRC
-
-*** Syntax checking
-#+BEGIN_SRC emacs-lisp
-;(add-hook 'c++-mode-hook 'flycheck-mode)
-;(add-hook 'c-mode-hook 'flycheck-mode)
-;(require 'flycheck-rtags)
-
-(defun my-flycheck-rtags-setup ()
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil))
-;; c-mode-common-hook is also called by c++-mode
-;(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
-#+END_SRC
-
 ** Literate Programming
 #+BEGIN_SRC emacs-lisp
 (org-babel-do-load-languages
@@ -346,6 +249,7 @@ https://github.com/tsukimizake/company-dcd
 (require 'd-mode)
 (require 'company-dcd)
 (add-hook 'd-mode-hook 'company-dcd-mode)
+#+END_SRC
 * Experimental
 ** Switching buffers
 #+BEGIN_SRC emacs-lisp
