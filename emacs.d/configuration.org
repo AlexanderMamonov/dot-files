@@ -5,6 +5,7 @@
 * ideas Sources
 ** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
 
+** http://tuhdo.github.io/emacs-tutor.html
 * custom variables
 #+BEGIN_SRC emacs-lisp
 
@@ -64,7 +65,6 @@
 
 ** Highlight the current line
 #+BEGIN_SRC emacs-lisp
-
 (when window-system
   (global-hl-line-mode))
 
@@ -290,4 +290,47 @@ https://github.com/magit/magit
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0)
+#+END_SRC
+* Projects
+Here is a tool for support projects
+https://www.projectile.mx/en/latest/installation/
+https://github.com/bbatsov/projectile
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'projectile)
+  (package-install 'projectile))
+
+
+(require 'projectile)
+; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(projectile-mode +1)
+
+; use native find
+; (setq projectile-indexing-method 'native)
+; (setq projectile-enable-caching t)
+#+END_SRC
+
+** open project file
+#+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "C-p") 'project-find-file)
+#+END_SRC
+
+** open project directory
+#+BEGIN_SRC emacs-lisp
+; projectile-find-dir shows project in dired
+#+END_SRC
+
+** fuzzy search for project
+http://tuhdo.github.io/helm-projectile.html
+https://github.com/bbatsov/helm-projectile
+C-p h main command
+C-p p switch project
+C-p s g grep in project
+C-p d find directory
+
+#+BEGIN_SRC emacs-lisp
+(require 'helm-projectile)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
 #+END_SRC
