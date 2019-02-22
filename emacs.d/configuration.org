@@ -285,3 +285,9 @@ https://github.com/magit/magit
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+END_SRC
+* autocomplition
+#+BEGIN_SRC emacs-lisp
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0)
+#+END_SRC
