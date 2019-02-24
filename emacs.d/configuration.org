@@ -241,8 +241,39 @@ Use evil
    (emacs-lisp . nil)
    ))
 #+END_SRC
-* Experimental
+* Helm
+helm tutorial
+http://tuhdo.github.io/helm-intro.html
+#+BEGIN_SRC emacs-lisp
+  (require 'helm)
+  (require 'helm-config)
+
+  (setq helm-autoresize-max-height 0)
+  (setq helm-autoresize-min-height 20)
+  (helm-autoresize-mode 1)
+
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  (global-set-key (kbd "C-c h o") 'helm-occur) ; search in the current file
+
+  ; enables linum-relative in Helm
+  ; (helm-linum-relative-mode 1)
+
+
+
+  (helm-mode 1)
+#+END_SRC
+** TODO Do i need to do something to initialize helm?
 ** Switching buffers
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map (kbd "M-f") 'helm-for-files)
+  (define-key global-map (kbd "M-b") 'helm-mini)
+
+#+END_SRC
+** ido
 #+BEGIN_SRC emacs-lisp
   (require 'ido)
   ;; make buffer switch command do suggestions, also for find-file command
@@ -261,29 +292,21 @@ Use evil
   (setq ido-default-buffer-method 'selected-window) ; use current pane for newly switched buffer
   (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil) ; stop ido from suggesting when naming new file
 
-  (define-key global-map (kbd "M-f") 'ido-find-file)
-  (define-key global-map (kbd "M-b") 'ido-switch-buffer)
   (define-key global-map (kbd "M-d") 'ido-dired)
 
 #+END_SRC
 
+** M-x mode
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+#+END_SRC
 * git
 https://github.com/magit/magit
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
-#+END_SRC
-* M-x mode
-#+BEGIN_SRC emacs-lisp
-  (require 'smex) ; Not needed if you use package.el
-
-  (smex-initialize) ; Can be omitted. This might cause a (minimal) delay
-                    ; when Smex is auto-initialized on its first run.
-
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 #+END_SRC
 * autocomplition
 #+BEGIN_SRC emacs-lisp
@@ -293,8 +316,13 @@ https://github.com/magit/magit
 #+END_SRC
 * Projects
 Here is a tool for support projects
+Documentation:
 https://www.projectile.mx/en/latest/installation/
 https://github.com/bbatsov/projectile
+
+Tutorial:
+http://tuhdo.github.io/helm-projectile.html
+
 #+BEGIN_SRC emacs-lisp
 (unless (package-installed-p 'projectile)
   (package-install 'projectile))
@@ -307,7 +335,7 @@ https://github.com/bbatsov/projectile
 
 ; use native find
 ; (setq projectile-indexing-method 'native)
-; (setq projectile-enable-caching t)
+ (setq projectile-enable-caching t)
 #+END_SRC
 
 ** open project file
@@ -333,4 +361,7 @@ C-p d find directory
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 
+(setq projectile-switch-project-action 'helm-projectile)
 #+END_SRC
+* Bookmarks
+http://ergoemacs.org/emacs/bookmark.html
