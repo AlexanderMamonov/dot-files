@@ -83,11 +83,17 @@
 #+END_SRC 
 
 
+** window title
+#+BEGIN_SRC emacs-lisp
+(setq frame-title-format '(:eval buffer-file-truename))
+#+END_SRC
+
+
 ** Set default font and configure font resizing
 #+BEGIN_SRC emacs-lisp
 ;(setq hrs/default-font "Inconsolata")
 (setq hrs/default-font "Ubuntu Mono")
-(setq hrs/default-font-size 12)
+(setq hrs/default-font-size 15)
 (setq hrs/current-font-size hrs/default-font-size)
 (setq hrs/font-change-increment 1.05)
 
@@ -124,6 +130,7 @@
 (define-key global-map (kbd "C--") 'hrs/decrease-font-size)
 (hrs/reset-font-size)
 #+END_SRC
+
 
 ** Disable startup screen
 #+BEGIN_SRC emacs-lisp
@@ -235,8 +242,7 @@ Use evil
 ;(evil-set-initial-state 'term-mode 'emacs)
 #+END_SRC
 
-* Programming
-** Literate Programming
+* Literate Programming
 #+BEGIN_SRC emacs-lisp
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -244,7 +250,7 @@ Use evil
    (emacs-lisp . nil)
    ))
 #+END_SRC
-** D-Lang
+* D-Lang
 https://github.com/dlang-community/DCD
 https://github.com/tsukimizake/company-dcd
 
@@ -264,7 +270,7 @@ https://github.com/tsukimizake/company-dcd
 )))
 
 #+END_SRC
-*** workaround
+** workaround
 delete compled company-dcd.el
 in function  company-dcd--call-process
 just before (kill-buffer buf) 
@@ -292,6 +298,8 @@ http://tuhdo.github.io/helm-intro.html
   ; (helm-linum-relative-mode 1)
 
 
+  (define-key evil-motion-state-map "/" 'helm-occur)
+  (define-key global-map (kbd "M-d") 'dired)
 
   (helm-mode 1)
 #+END_SRC
@@ -302,29 +310,6 @@ http://tuhdo.github.io/helm-intro.html
   (define-key global-map (kbd "M-b") 'helm-mini)
 
 #+END_SRC
-** ido
-#+BEGIN_SRC emacs-lisp
-  (require 'ido)
-  ;; make buffer switch command do suggestions, also for find-file command
-  (ido-mode 1)
-  ;; (ido-everywhere 1)
-  (if ; make ido display choices vertically
-      (version< emacs-version "25")
-      (progn
-        (make-local-variable 'ido-separator)
-        (setq ido-separator "\n"))
-    (progn
-      (make-local-variable 'ido-decorations)
-      (setf (nth 2 ido-decorations) "\n")))
-  (setq ido-enable-flex-matching t) ; show any name that has the chars you typed
-  (setq ido-default-file-method 'selected-window) ; use current pane for newly opened file
-  (setq ido-default-buffer-method 'selected-window) ; use current pane for newly switched buffer
-  (define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil) ; stop ido from suggesting when naming new file
-
-  (define-key global-map (kbd "M-d") 'ido-dired)
-
-#+END_SRC
-
 ** M-x mode
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-x") 'helm-M-x)
@@ -394,3 +379,17 @@ C-p d find directory
 #+END_SRC
 * Bookmarks
 http://ergoemacs.org/emacs/bookmark.html
+* Enable spell-checking in the usual places
+#+BEGIN_SRC emacs-lisp
+(require 'flyspell)
+
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'gfm-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'flyspell-mode)
+
+(add-hook 'git-commit-mode-hook 'flyspell-mode)
+(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+
+#+END_SRC
+* TODO how to use spellcheck
+* TODO how to use gdb
