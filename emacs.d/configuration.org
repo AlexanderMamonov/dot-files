@@ -141,7 +141,9 @@ Use evil
 ** Relatative line numbers
 #+BEGIN_SRC emacs-lisp
 (require 'linum-relative)
-(linum-mode)
+; (add-hook 'text-mode-hook 'linum-mode)
+; (add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'find-file-hook 'linum-relative-mode)
 #+END_SRC 
 
 
