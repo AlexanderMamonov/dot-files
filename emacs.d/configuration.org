@@ -30,9 +30,10 @@
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 (package-initialize)
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/"))) 
+(setq package-archives '(("melpa"        . "http://melpa.milkbox.net/packages/")
+                         ("org"          . "http://orgmode.org/elpa/")
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("gnu"          . "http://elpa.gnu.org/packages/"))) 
 ;(package-refresh-contents)
 #+END_SRC
 
@@ -243,6 +244,32 @@ Use evil
    (emacs-lisp . nil)
    ))
 #+END_SRC
+** D-Lang
+https://github.com/dlang-community/DCD
+https://github.com/tsukimizake/company-dcd
+
+#+BEGIN_SRC emacs-lisp
+(require 'd-mode)
+(require 'company-dcd)
+(add-hook 'd-mode-hook 'company-dcd-mode)
+(setq company-dcd--flags (quote (
+"-I/home/aleksandr/dev/dhtproto/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/ocean/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/swarm/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/swarm/submodules/ocean/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/swarm/submodules/turtle/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/swarm/submodules/turtle/submodules/ocean/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/turtle/src"
+"-I/home/aleksandr/dev/dhtproto/submodules/turtle/submodules/ocean/src"
+)))
+
+#+END_SRC
+*** workaround
+delete compled company-dcd.el
+in function  company-dcd--call-process
+just before (kill-buffer buf) 
+call (delete-process buf)
+
 * Helm
 helm tutorial
 http://tuhdo.github.io/helm-intro.html
