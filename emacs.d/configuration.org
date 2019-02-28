@@ -3,9 +3,40 @@
 #+END_SRC
 
 * ideas Sources
-** https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org
-
+** https://github.com/hrs/dotfiles/
 ** http://tuhdo.github.io/emacs-tutor.html
+* package
+#+BEGIN_SRC emacs-lisp
+
+(require 'package)
+(package-initialize)
+(setq package-archives '(
+  ("melpa"        . "http://melpa.org/packages/")
+  ("org"          . "http://orgmode.org/elpa/")
+; ("melpa-stable" . "https://stable.melpa.org/packages/")
+  ("gnu"          . "http://elpa.gnu.org/packages/")))
+
+(defun mamonov-package-install-all ()
+  (interactive)
+  (package-refresh-contents)
+  (package-install 'solarized-theme)
+  (package-install 'evil)
+  (package-install 'powerline)
+  (package-install 'powerline-evil)
+  (package-install 'linum-relative)
+  (package-install 'org-bullets)
+  (package-install 'org-alert)
+  (package-install 'org-pomodoro)
+  (package-install 'd-mode)
+  (package-install 'company)
+  (package-install 'company-dcd)
+  (package-install 'magit)
+  (package-install 'projectile)
+  (package-install 'helm)
+  (package-install 'helm-projectile)
+  )
+
+#+END_SRC
 * custom variables
 #+BEGIN_SRC emacs-lisp
 
@@ -24,17 +55,6 @@
  ;; If there is more than one, they won't work right.
  )
 (prefer-coding-system 'utf-8)
-#+END_SRC
-
-* package
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(package-initialize)
-(setq package-archives '(("melpa"        . "http://melpa.milkbox.net/packages/")
-                         ("org"          . "http://orgmode.org/elpa/")
-			 ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("gnu"          . "http://elpa.gnu.org/packages/"))) 
-;(package-refresh-contents)
 #+END_SRC
 
 * look and feel
@@ -80,7 +100,7 @@
 #+BEGIN_SRC emacs-lisp
 (require 'powerline)
 (require 'powerline-evil)
-#+END_SRC 
+#+END_SRC
 
 
 ** window title
@@ -152,19 +172,19 @@ Use evil
 ; (add-hook 'text-mode-hook 'linum-mode)
 ; (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'find-file-hook 'linum-relative-mode)
-#+END_SRC 
+#+END_SRC
 
 
 ** Powerline
 #+BEGIN_SRC emacs-lisp
 (require 'powerline)
 (powerline-default-theme)
-#+END_SRC 
+#+END_SRC
 
-* org mode 
+* org mode
 #+BEGIN_SRC emacs-lisp
 (require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () 
+(add-hook 'org-mode-hook (lambda ()
    (org-bullets-mode 1)
 ))
 
@@ -183,7 +203,7 @@ Use evil
 (add-hook 'after-save-hook #'org-sync)
 #+END_SRC
 
-** Pomodoro Technique 
+** Pomodoro Technique
 #+BEGIN_SRC emacs-lisp
 (setq org-pomodoro-length 20)
 (define-key global-map "\C-cpom" 'org-pomodoro)
@@ -273,7 +293,7 @@ https://github.com/tsukimizake/company-dcd
 ** workaround
 delete compled company-dcd.el
 in function  company-dcd--call-process
-just before (kill-buffer buf) 
+just before (kill-buffer buf)
 call (delete-process buf)
 
 * Helm
@@ -303,7 +323,6 @@ http://tuhdo.github.io/helm-intro.html
 
   (helm-mode 1)
 #+END_SRC
-** TODO Do i need to do something to initialize helm?
 ** Switching buffers
 #+BEGIN_SRC emacs-lisp
   (define-key global-map (kbd "M-f") 'helm-for-files)
@@ -388,7 +407,6 @@ http://ergoemacs.org/emacs/bookmark.html
 
 (add-hook 'git-commit-mode-hook 'flyspell-mode)
 (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
-
 #+END_SRC
 * on save file hook
 #+BEGIN_SRC emacs-lisp
@@ -402,6 +420,7 @@ http://ergoemacs.org/emacs/bookmark.html
     (delete-trailing-whitespace)
     (setq require-final-newline t)))
 #+END_SRC
+
 * TODO how to use spellcheck
 * TODO how to use gdb
 * TODO use git submodules for package management
