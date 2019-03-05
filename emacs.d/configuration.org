@@ -323,6 +323,16 @@ http://tuhdo.github.io/helm-intro.html
 
   (helm-mode 1)
 #+END_SRC
+** dired
+#+BEGIN_SRC emacs-lisp
+(defun dired-open-file ()
+  "In dired, open the file named on this line."
+  (interactive)
+  (let* ((file (dired-get-filename nil t)))
+    (call-process "xdg-open" nil 0 nil file)))
+
+(global-set-key (kbd "C-c o") 'dired-open-file)
+#+END_SRC
 ** Switching buffers
 #+BEGIN_SRC emacs-lisp
   (define-key global-map (kbd "M-f") 'helm-for-files)
