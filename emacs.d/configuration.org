@@ -383,7 +383,6 @@ http://ergoemacs.org/emacs/bookmark.html
 #+BEGIN_SRC emacs-lisp
 (require 'flyspell)
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'gfm-mode-hook 'flyspell-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
 
@@ -391,5 +390,18 @@ http://ergoemacs.org/emacs/bookmark.html
 (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
 
 #+END_SRC
+* on save file hook
+#+BEGIN_SRC emacs-lisp
+; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(setq require-final-newline t)
+
+(add-hook 'before-save-hook (lambda ()
+    (setq tab-width 4)
+    (untabify (point-min) (point-max))
+    (delete-trailing-whitespace)
+    (setq require-final-newline t)))
+#+END_SRC
 * TODO how to use spellcheck
 * TODO how to use gdb
+* TODO use git submodules for package management
