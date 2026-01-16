@@ -43,11 +43,26 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-(setq org-roam-directory "/Users/aleksandr/Documents/Notes")
-(setq org-roam-dailies-directory "/Users/aleksandr/Documents/Notes/journals")
+(setq org-directory (file-truename "/Users/aleksandr/Documents/Notes/"))
+(setq org-roam-directory org-directory)
+
+(after! org
+  ;; Make sure Org uses variable pitch (proportional) font
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+
+  ;; Set font sizes for each heading level
+  (custom-set-faces!
+    '(org-level-1 :inherit outline-1 :height 1.4)
+    '(org-level-2 :inherit outline-2 :height 1.3)
+    '(org-level-3 :inherit outline-3 :height 1.2)
+    '(org-level-4 :inherit outline-4 :height 1.1)
+    '(org-level-5 :inherit outline-5 :height 1.05)
+    '(org-level-6 :inherit outline-6 :height 1.0)
+    '(org-document-title :height 1.5 :weight bold)))
+
 
 (after! org-roam
+  (setq org-roam-dailies-directory "journals/")
   (setq org-roam-file-exclude-regexp
         (regexp-opt '("/logseq/" "/assets/"))))
 
@@ -83,19 +98,5 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-(after! org
-  ;; Make sure Org uses variable pitch (proportional) font
-  (add-hook 'org-mode-hook 'variable-pitch-mode)
-
-  ;; Set font sizes for each heading level
-  (custom-set-faces!
-    '(org-level-1 :inherit outline-1 :height 1.4)
-    '(org-level-2 :inherit outline-2 :height 1.3)
-    '(org-level-3 :inherit outline-3 :height 1.2)
-    '(org-level-4 :inherit outline-4 :height 1.1)
-    '(org-level-5 :inherit outline-5 :height 1.05)
-    '(org-level-6 :inherit outline-6 :height 1.0)
-    '(org-document-title :height 1.5 :weight bold)))
-
 (map! :leader
       "SPC" #'execute-extended-command)
