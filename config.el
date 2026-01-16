@@ -48,6 +48,11 @@
 (setq org-roam-directory org-directory)
 
 (after! org
+  ;; Include all org files in Notes directory for agenda, excluding bak/
+  (setq org-agenda-files
+        (seq-filter (lambda (f) (not (string-match-p "/bak/" f)))
+                    (directory-files-recursively org-directory "\\.org$")))
+
   ;; Make sure Org uses variable pitch (proportional) font
   (add-hook 'org-mode-hook 'variable-pitch-mode)
 
@@ -65,7 +70,7 @@
 (after! org-roam
   (setq org-roam-dailies-directory "journals/")
   (setq org-roam-file-exclude-regexp
-        (regexp-opt '("/logseq/" "/assets/"))))
+        (regexp-opt '("/logseq/" "/assets/" "/bak/")))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
