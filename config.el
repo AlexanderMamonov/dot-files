@@ -71,6 +71,17 @@
   (setq org-roam-dailies-directory "journals/")
   (setq org-roam-file-exclude-regexp
         (regexp-opt '("/logseq/" "/assets/" "/bak/")))
+  ;; Use slug-only filenames
+  (setq org-roam-capture-templates
+        '(("d" "default" plain "%?"
+           :target (file+head "${slug}.org"
+                              "#+title: ${title}\n")
+           :unnarrowed t)))
+
+  ;; Add :CREATED: property when creating new nodes
+  (add-hook 'org-roam-capture-new-node-hook
+            (lambda ()
+              (org-set-property "CREATED" (format-time-string "%Y%m%d%H%M")))))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
