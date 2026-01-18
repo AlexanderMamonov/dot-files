@@ -134,3 +134,28 @@
   (setq interprogram-cut-function #'my/copy-to-clipboard)
   (setq interprogram-paste-function #'my/paste-from-clipboard))
 
+;; Auto-save org-roam files
+(defun my/auto-save-org-roam ()
+  "Save current buffer if it's an org-roam file."
+  (when (and (buffer-file-name)
+             (string-prefix-p (expand-file-name org-directory) (buffer-file-name))
+             (derived-mode-p 'org-mode)
+             (buffer-modified-p))
+    (save-buffer)))
+
+;; Save when exiting insert mode
+(add-hook 'evil-insert-state-exit-hook #'my/auto-save-org-roam)
+;; Save when switching buffers
+(add-hook 'doom-switch-buffer-hook #'my/auto-save-org-roam)
+;; Save when Emacs loses focus
+(add-hook 'focus-out-hook #'my/auto-save-org-roam)
+
+;; Auto-commit org-roam every 5 minutes
+(defun my/auto-commit-org-roam ()
+  "Automatically commit changes in org-directory."
+  (let ((default-directory org-directory))
+    (when (and (file-exists-p (expand-file-name ".git" org-directory))
+               (not (string-empty-p (shell-command-to-string "git status --porcelain"))))
+      (shell-command "git add -A && git commit -m 'Auto-commit from Emacs'"))))
+
+(run-with-timer 300 300 #'my/auto-commit-org-roam)
