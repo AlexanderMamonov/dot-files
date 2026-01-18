@@ -83,10 +83,11 @@
                               "#+title: ${title}\n")
            :unnarrowed t)))
 
-  ;; Add :CREATED: property when creating new nodes
+  ;; Add :CREATED: property when creating new nodes (only if not already set)
   (add-hook 'org-roam-capture-new-node-hook
             (lambda ()
-              (org-set-property "CREATED" (format-time-string "%Y%m%d%H%M")))))
+              (unless (org-entry-get nil "CREATED")
+                (org-set-property "CREATED" (format-time-string "%Y%m%d%H%M"))))))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
