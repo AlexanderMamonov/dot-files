@@ -122,3 +122,15 @@
 ;; they are implemented.
 (map! :leader
       "SPC" #'execute-extended-command)
+;; Clipboard integration for terminal mode (macOS)
+(unless (display-graphic-p)
+  (defun my/copy-to-clipboard (text &optional _push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" nil "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+  (defun my/paste-from-clipboard ()
+    (shell-command-to-string "pbpaste"))
+  (setq interprogram-cut-function #'my/copy-to-clipboard)
+  (setq interprogram-paste-function #'my/paste-from-clipboard))
+
