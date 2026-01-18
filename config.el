@@ -48,10 +48,15 @@
 (setq org-roam-directory org-directory)
 
 (after! org
-  ;; Include all org files in Notes directory for agenda, excluding bak/
-  (setq org-agenda-files
-        (seq-filter (lambda (f) (not (string-match-p "/bak/" f)))
-                    (directory-files-recursively org-directory "\\.org$")))
+  ;; Only include org files that contain TODO keywords (much faster with many files)
+  (defun my/org-agenda-files-with-todos ()
+    "Return list of org files containing TODO keywords, excluding bak/."
+    (let ((default-directory org-directory))
+      (split-string
+       (shell-command-to-string
+        "grep -rl --include='*.org' -E '^\\*+.*(TODO|WAIT)' . 2>/dev/null | grep -v '/bak/'")
+       "\n" t)))
+  (setq org-agenda-files (my/org-agenda-files-with-todos))
 
   ;; Make sure Org uses variable pitch (proportional) font
   (add-hook 'org-mode-hook 'variable-pitch-mode)
