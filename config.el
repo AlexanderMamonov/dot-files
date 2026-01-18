@@ -44,8 +44,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory (file-truename "/Users/aleksandr/Documents/Notes/"))
-(setq org-roam-directory org-directory)
+(setq org-directory (file-truename "~/Documents/Notes/"))
+(setq org-roam-directory (file-truename "~/Documents/Notes/pages/"))
 
 (after! org
   ;; Only include org files that contain TODO keywords (much faster with many files)
@@ -73,7 +73,7 @@
 
 
 (after! org-roam
-  (setq org-roam-dailies-directory "journals/")
+  (setq org-roam-dailies-directory (file-truename "~/Documents/Notes/journals/"))
   (setq org-roam-file-exclude-regexp
         (regexp-opt '("/logseq/" "/assets/" "/bak/")))
   ;; Use slug-only filenames
