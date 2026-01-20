@@ -120,8 +120,12 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+;; it seems for me this command actually replaces existing bindings instead of adding new one
 (map! :leader
-      "SPC" #'execute-extended-command)
+      "SPC" #'execute-extended-command
+      "g h" #'org-roam-dailies-goto-today
+      "k" #'org-roam-node-find)
+
 ;; Clipboard integration for terminal mode (macOS)
 (unless (display-graphic-p)
   (defun my/copy-to-clipboard (text &optional _push)
