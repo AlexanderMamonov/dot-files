@@ -73,7 +73,6 @@
 
 
 (after! org-roam
-  (setq org-roam-dailies-directory (file-truename "~/Documents/Notes/journals/"))
   (setq org-roam-file-exclude-regexp
         (regexp-opt '("/logseq/" "/assets/" "/bak/")))
   ;; Use slug-only filenames
