@@ -83,6 +83,7 @@
 (after! org-roam
   (setq org-roam-file-exclude-regexp
         (regexp-opt '("/logseq/" "/assets/" "/bak/")))
+  (setq org-roam-completion-everywhere t)
   ;; Use slug-only filenames
   (setq org-roam-capture-templates
         '(("d" "default" plain "%?"
