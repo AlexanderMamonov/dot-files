@@ -48,6 +48,14 @@
 (setq org-roam-directory (file-truename "~/Documents/Notes/pages/"))
 
 (after! org
+  ;; Log state changes with timestamps
+  (setq org-log-done 'time)                    ; Log when task is marked DONE
+  (setq org-log-into-drawer t)                 ; Put logs in LOGBOOK drawer
+  (setq org-treat-insert-todo-heading-as-state-change t)  ; Log when TODO is created
+  ; TODO I think, there was more statuses by default. I should check how to define this properly
+  (setq org-todo-keywords
+        '((sequence "TODO(t!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c!)")))
+
   ;; Only include org files that contain TODO keywords (much faster with many files)
   (defun my/org-agenda-files-with-todos ()
     "Return list of org files containing TODO keywords, excluding bak/."
