@@ -135,6 +135,14 @@
       "g h" #'org-roam-dailies-goto-today
       "k" #'org-roam-node-find)
 
+;; Priority keybindings: SPC m p a/b/c
+(map! :map org-mode-map
+      :localleader
+      (:prefix ("p" . "priority")
+       :desc "Priority A" "a" (cmd! (org-priority ?A))
+       :desc "Priority B" "b" (cmd! (org-priority ?B))
+       :desc "Priority C" "c" (cmd! (org-priority ?C))))
+
 ;; Russian keyboard layout support for keybindings
 (use-package! reverse-im
   :custom
