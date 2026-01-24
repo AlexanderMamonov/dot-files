@@ -135,6 +135,13 @@
       "g h" #'org-roam-dailies-goto-today
       "k" #'org-roam-node-find)
 
+;; Russian keyboard layout support for keybindings
+(use-package! reverse-im
+  :custom
+  (reverse-im-input-methods '("russian-computer"))
+  :config
+  (reverse-im-mode t))
+
 ;; Clipboard integration for terminal mode (macOS)
 (unless (display-graphic-p)
   (defun my/copy-to-clipboard (text &optional _push)
