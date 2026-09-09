@@ -62,7 +62,7 @@
                            'original-result))
                   (should-not file-calls)
                   (should (equal original-calls
-                                 (list (list outside-directory 'extra)))))
+                                 (list (list outside-directory predicate 'extra)))))
               (delete-directory outside-directory t))))))))
 
 ;;; test-org-srs-grep-prefilter.el ends here
