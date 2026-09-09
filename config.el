@@ -104,7 +104,9 @@
          ("<f5>" . org-srs-review-rate-easy)
          ("<f6>" . org-srs-review-rate-good)
          ("<f7>" . org-srs-review-rate-hard)
-         ("<f8>" . org-srs-review-rate-again)))
+         ("<f8>" . org-srs-review-rate-again))
+  :config
+  (require 'my-org-srs-grep-prefilter))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
