@@ -98,6 +98,14 @@
               (unless (org-entry-get nil "CREATED")
                 (org-set-property "CREATED" (format-time-string "%Y%m%d%H%M"))))))
 
+(use-package! org-srs
+  :defer t
+  :bind (:map org-mode-map
+         ("<f5>" . org-srs-review-rate-easy)
+         ("<f6>" . org-srs-review-rate-good)
+         ("<f7>" . org-srs-review-rate-hard)
+         ("<f8>" . org-srs-review-rate-again)))
+
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.

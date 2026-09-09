@@ -49,3 +49,4 @@
 ;; (unpin! t)
 
 (package! reverse-im)
+(package! org-srs)
