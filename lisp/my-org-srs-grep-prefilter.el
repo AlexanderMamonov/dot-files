@@ -51,16 +51,17 @@ that no file matched; every other nonzero status is reported as an error."
                      status))))))))
 
 (defun my/org-srs-query-directory-with-grep-prefilter
-    (original-function query-predicate &optional directory &rest args)
+    (original-function query-predicate &rest directory-arguments)
   "Use grep candidates for DIRECTORY when it is `org-roam-directory'."
-  (if (and (boundp 'org-roam-directory)
-           org-roam-directory
-           (file-equal-p directory org-roam-directory))
-      (apply #'append
-             (mapcar (lambda (file)
-                       (org-srs-query-file query-predicate file))
-                     (my/org-srs-grep-candidate-files directory)))
-    (apply original-function query-predicate directory args)))
+  (let ((directory (or (car directory-arguments) default-directory)))
+    (if (and (boundp 'org-roam-directory)
+             org-roam-directory
+             (file-equal-p directory org-roam-directory))
+        (apply #'append
+               (mapcar (lambda (file)
+                         (org-srs-query-file query-predicate file))
+                       (my/org-srs-grep-candidate-files directory)))
+      (apply original-function query-predicate directory-arguments))))
 
 (when (fboundp 'org-srs-query-directory)
   (advice-add 'org-srs-query-directory :around
