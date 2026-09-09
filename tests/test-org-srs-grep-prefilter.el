@@ -3,6 +3,11 @@
 (require 'ert)
 (require 'cl-lib)
 
+(add-to-list 'load-path
+             (expand-file-name "../lisp"
+                               (file-name-directory (or load-file-name buffer-file-name))))
+(require 'my-org-srs-grep-prefilter nil t)
+
 (defmacro my/org-srs-test-with-fixture-tree (&rest body)
   "Run BODY with a temporary Org-roam-like fixture tree."
   (declare (indent 0) (debug t))
@@ -31,10 +36,11 @@
   (my/org-srs-test-with-fixture-tree
     (let ((org-roam-directory fixture-directory)
           (file-calls nil)
-          (original-calls nil))
+          (original-calls nil)
+          (predicate (lambda (_item) t)))
       (cl-letf (((symbol-function 'org-srs-query-file)
-                 (lambda (file &rest _args)
-                   (push file file-calls)
+                 (lambda (file query-predicate &rest _args)
+                   (push (list file query-predicate) file-calls)
                    (list file))))
         (let ((original-directory-query
                (lambda (&rest args)
@@ -42,9 +48,9 @@
                  'original-result)))
           (should (equal
                    (my/org-srs-query-directory-with-grep-prefilter
-                    original-directory-query fixture-directory)
+                    original-directory-query fixture-directory predicate)
                    (list has-card)))
-          (should (equal file-calls (list has-card)))
+          (should (equal file-calls (list (list has-card predicate))))
           (should-not original-calls)
           (setq file-calls nil)
           (let ((outside-directory (make-temp-file "org-srs-outside-" t)))
@@ -52,7 +58,7 @@
                 (progn
                   (should (eq
                            (my/org-srs-query-directory-with-grep-prefilter
-                            original-directory-query outside-directory 'extra)
+                            original-directory-query outside-directory predicate 'extra)
                            'original-result))
                   (should-not file-calls)
                   (should (equal original-calls
