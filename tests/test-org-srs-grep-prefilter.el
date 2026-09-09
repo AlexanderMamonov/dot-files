@@ -14,6 +14,7 @@
   `(let ((fixture-directory (make-temp-file "org-srs-grep-prefilter-" t)))
      (unwind-protect
          (let ((has-card (expand-file-name "has-card.org" fixture-directory))
+               (mixed-case-card (expand-file-name "mixed-case.org" fixture-directory))
                (no-card (expand-file-name "no-card.org" fixture-directory))
                (asset (expand-file-name "asset.txt" fixture-directory))
                (nested-directory (expand-file-name "nested" fixture-directory))
@@ -22,6 +23,8 @@
            (make-directory nested-directory)
            (with-temp-file has-card
              (insert "#+title: Card note\n#+NAME: srsitem:example\n"))
+           (with-temp-file mixed-case-card
+             (insert "#+title: Mixed case card\n#+Name: SRSITEM:mixed-case\n"))
            (with-temp-file no-card
              (insert "#+title: Ordinary note\n"))
            (with-temp-file asset
@@ -37,7 +40,7 @@
   "The grep prefilter returns only Org files containing an Org-SRS marker."
   (my/org-srs-test-with-fixture-tree
     (should (equal (my/org-srs-grep-candidate-files fixture-directory)
-                   (list has-card nested-card)))))
+                   (list has-card mixed-case-card nested-card)))))
 
 (ert-deftest my/org-srs-directory-query-prefilters-only-org-roam-directory ()
   "The directory advice narrows Org-roam queries and preserves other scopes."
@@ -57,9 +60,10 @@
           (should (equal
                    (my/org-srs-query-directory-with-grep-prefilter
                     original-directory-query fixture-directory predicate)
-                   (list has-card nested-card)))
+                   (list has-card mixed-case-card nested-card)))
           (should (equal file-calls
                          (list (list nested-card predicate)
+                               (list mixed-case-card predicate)
                                (list has-card predicate))))
           (should-not original-calls)
           (setq file-calls nil)
