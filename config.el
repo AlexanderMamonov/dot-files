@@ -136,6 +136,10 @@
       "g h" #'org-roam-dailies-goto-today
       "k" #'org-roam-node-find)
 
+;; Insert org-roam link without leaving insert mode
+(map! :map org-mode-map
+      :i "C-f i" #'org-roam-node-insert)
+
 ;; Priority keybindings: SPC m p a/b/c
 (map! :map org-mode-map
       :localleader
