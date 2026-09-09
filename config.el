@@ -155,6 +155,41 @@
   :config
   (reverse-im-mode t))
 
+;; QGMLWY only while typing in Evil insert state.
+(after! quail
+  (quail-define-package
+   "qgmlwy" "English" "QGMLWY" t
+   "CarpalX QGMLWY layout for text insertion in Emacs.")
+  (quail-define-rules
+   ("q" ?q) ("w" ?g) ("e" ?m) ("r" ?l) ("t" ?w) ("y" ?y) ("u" ?f) ("i" ?u)
+   ("o" ?b) ("p" ?\;)
+   ("a" ?d) ("s" ?s) ("d" ?t) ("f" ?n) ("g" ?r) ("h" ?i) ("j" ?a) ("k" ?e)
+   ("l" ?o) (";" ?h) ("'" ?')
+   ("z" ?z) ("x" ?x) ("c" ?c) ("v" ?v) ("b" ?j) ("n" ?k) ("m" ?p)
+   ("," ?,) ("." ?.) ("/" ?/)
+   ("Q" ?Q) ("W" ?G) ("E" ?M) ("R" ?L) ("T" ?W) ("Y" ?Y) ("U" ?F) ("I" ?U)
+   ("O" ?B) ("P" ?:)
+   ("A" ?D) ("S" ?S) ("D" ?T) ("F" ?N) ("G" ?R) ("H" ?I) ("J" ?A) ("K" ?E)
+   ("L" ?O) (":" ?H) ("\"" ?\")
+   ("Z" ?Z) ("X" ?X) ("C" ?C) ("V" ?V) ("B" ?J) ("N" ?K) ("M" ?P)
+   ("<" ?<) (">" ?>) ("?" ??)))
+
+(defvar my/evil-qgmlwy-input-method "qgmlwy"
+  "Input method enabled automatically in Evil insert state.")
+
+(defun my/enable-qgmlwy-insert-input-method ()
+  "Enable QGMLWY when entering Evil insert state."
+  (unless (minibufferp)
+    (set-input-method my/evil-qgmlwy-input-method)))
+
+(defun my/disable-qgmlwy-insert-input-method ()
+  "Disable QGMLWY when leaving Evil insert state."
+  (when current-input-method
+    (deactivate-input-method)))
+
+;(add-hook 'evil-insert-state-entry-hook #'my/enable-qgmlwy-insert-input-method)
+;(add-hook 'evil-insert-state-exit-hook #'my/disable-qgmlwy-insert-input-method)
+
 ;; Clipboard integration for terminal mode (macOS)
 (unless (display-graphic-p)
   (defun my/copy-to-clipboard (text &optional _push)
