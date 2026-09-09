@@ -15,6 +15,7 @@
      (unwind-protect
          (let ((has-card (expand-file-name "has-card.org" fixture-directory))
                (mixed-case-card (expand-file-name "mixed-case.org" fixture-directory))
+               (whitespace-card (expand-file-name "whitespace-card.org" fixture-directory))
                (no-card (expand-file-name "no-card.org" fixture-directory))
                (asset (expand-file-name "asset.txt" fixture-directory))
                (nested-directory (expand-file-name "nested" fixture-directory))
@@ -25,6 +26,8 @@
              (insert "#+title: Card note\n#+NAME: srsitem:example\n"))
            (with-temp-file mixed-case-card
              (insert "#+title: Mixed case card\n#+Name: SRSITEM:mixed-case\n"))
+           (with-temp-file whitespace-card
+             (insert "#+title: Whitespace card\n  #+NAME:    srsitem:whitespace\n"))
            (with-temp-file no-card
              (insert "#+title: Ordinary note\n"))
            (with-temp-file asset
@@ -40,7 +43,7 @@
   "The grep prefilter returns only Org files containing an Org-SRS marker."
   (my/org-srs-test-with-fixture-tree
     (should (equal (my/org-srs-grep-candidate-files fixture-directory)
-                   (list has-card mixed-case-card nested-card)))))
+                   (list has-card mixed-case-card nested-card whitespace-card)))))
 
 (ert-deftest my/org-srs-directory-query-prefilters-only-org-roam-directory ()
   "The directory advice narrows Org-roam queries and preserves other scopes."
@@ -50,7 +53,7 @@
           (original-calls nil)
           (predicate (lambda (_item) t)))
       (cl-letf (((symbol-function 'org-srs-query-file)
-                 (lambda (file query-predicate &rest _args)
+                 (lambda (query-predicate file &rest _args)
                    (push (list file query-predicate) file-calls)
                    (list file))))
         (let ((original-directory-query
@@ -59,10 +62,11 @@
                  'original-result)))
           (should (equal
                    (my/org-srs-query-directory-with-grep-prefilter
-                    original-directory-query fixture-directory predicate)
-                   (list has-card mixed-case-card nested-card)))
+                    original-directory-query predicate fixture-directory)
+                   (list has-card mixed-case-card nested-card whitespace-card)))
           (should (equal file-calls
-                         (list (list nested-card predicate)
+                         (list (list whitespace-card predicate)
+                               (list nested-card predicate)
                                (list mixed-case-card predicate)
                                (list has-card predicate))))
           (should-not original-calls)
@@ -72,11 +76,11 @@
                 (progn
                   (should (eq
                            (my/org-srs-query-directory-with-grep-prefilter
-                            original-directory-query outside-directory predicate 'extra)
+                            original-directory-query predicate outside-directory 'extra)
                            'original-result))
                   (should-not file-calls)
                   (should (equal original-calls
-                                 (list (list outside-directory predicate 'extra)))))
+                                 (list (list predicate outside-directory 'extra)))))
               (delete-directory outside-directory t))))))))
 
 ;;; test-org-srs-grep-prefilter.el ends here

@@ -9,7 +9,8 @@
 
 (defvar org-roam-directory nil)
 
-(defconst my/org-srs--item-marker-regexp "^#\\+NAME: srsitem:"
+(defconst my/org-srs--item-marker-regexp
+  "^[[:space:]]*#\\+NAME:[[:space:]]*srsitem:"
   "Extended regular expression matching an Org-SRS item marker.")
 
 (defun my/org-srs--grep-supports-include-p ()
@@ -50,16 +51,16 @@ that no file matched; every other nonzero status is reported as an error."
                      status))))))))
 
 (defun my/org-srs-query-directory-with-grep-prefilter
-    (original-function directory query-predicate &rest args)
+    (original-function query-predicate &optional directory &rest args)
   "Use grep candidates for DIRECTORY when it is `org-roam-directory'."
   (if (and (boundp 'org-roam-directory)
            org-roam-directory
            (file-equal-p directory org-roam-directory))
       (apply #'append
              (mapcar (lambda (file)
-                       (org-srs-query-file file query-predicate))
+                       (org-srs-query-file query-predicate file))
                      (my/org-srs-grep-candidate-files directory)))
-    (apply original-function directory query-predicate args)))
+    (apply original-function query-predicate directory args)))
 
 (when (fboundp 'org-srs-query-directory)
   (advice-add 'org-srs-query-directory :around
