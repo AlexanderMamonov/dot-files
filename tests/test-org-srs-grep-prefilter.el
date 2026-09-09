@@ -8,6 +8,17 @@
                                (file-name-directory (or load-file-name buffer-file-name))))
 (require 'my-org-srs-grep-prefilter nil t)
 
+(defconst my/org-srs-test-config-file
+  (expand-file-name "../config.el" (file-name-directory load-file-name)))
+
+(ert-deftest my/org-srs-config-loads-prefilter-with-doom-loader ()
+  "Doom loads the local prefilter module without relying on `load-path'."
+  (with-temp-buffer
+    (insert-file-contents my/org-srs-test-config-file)
+    (should (string-match-p
+             (regexp-quote "(load! \"lisp/my-org-srs-grep-prefilter\")")
+             (buffer-string)))))
+
 (defmacro my/org-srs-test-with-fixture-tree (&rest body)
   "Run BODY with a temporary Org-roam-like fixture tree."
   (declare (indent 0) (debug t))
