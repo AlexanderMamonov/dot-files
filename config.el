@@ -106,6 +106,10 @@
          ("<f7>" . org-srs-review-rate-hard)
          ("<f8>" . org-srs-review-rate-again))
   :config
+  (defun org-roam-srs-review ()
+    "Start an Org-SRS review for the complete Org-roam directory."
+    (interactive)
+    (org-srs-review-start org-roam-directory))
   (load! "lisp/my-org-srs-grep-prefilter"))
 
 
