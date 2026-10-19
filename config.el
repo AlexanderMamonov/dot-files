@@ -107,11 +107,12 @@
          ("<f7>" . org-srs-review-rate-hard)
          ("<f8>" . org-srs-review-rate-again))
   :config
+  (setq org-srs-query-directory-grep-directories (list org-roam-directory))
   (defun org-roam-srs-review ()
     "Start an Org-SRS review for the complete Org-roam directory."
     (interactive)
-    (org-srs-review-start org-roam-directory))
-  (load! "lisp/my-org-srs-grep-prefilter"))
+    (require 'org-srs)
+    (org-srs-review-start org-roam-directory)))
 (map! :map org-mode-map
       :leader
       (:prefix ("r" . "review")

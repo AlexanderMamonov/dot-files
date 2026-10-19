@@ -50,6 +50,7 @@
 
 (package! reverse-im)
 (package! org-srs
-  :recipe (:host github :repo "AlexanderMamonov/org-srs"
-           :branch "doom-integration")
-  :pin "b5ca2d4adf490d70aaaf0992717e698d299cbc39")
+  :recipe (:type nil
+           :local-repo "/Users/aleksandr/.config/doom/.worktrees/org-srs-fork"
+           :build (:not compile native-compile))
+  :pin nil)
