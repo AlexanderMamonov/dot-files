@@ -23,7 +23,8 @@
 ;;
 (setq doom-font (font-spec :family "Comic Code" :size 18)
       doom-variable-pitch-font (font-spec :family "Comic Code" :size 18)
-      doom-symbol-font (font-spec :family "Symbols Nerd Font Mono"))
+      ;doom-symbol-font (font-spec :family "Symbols Nerd Font Mono")
+      )
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -66,7 +67,7 @@
         "grep -rl --include='*.org' -E '^\\*+.*(TODO|PROJ|LOOP|STRT|WAIT|HOLD|IDEA)' . 2>/dev/null | grep -v '/bak/'")
        "\n" t)))
   (setq org-agenda-files (my/org-agenda-files-with-todos))
-
+  (setq org-babel-python-command "python3")
   ;; Make sure Org uses variable pitch (proportional) font
   (add-hook 'org-mode-hook 'variable-pitch-mode)
 
@@ -111,6 +112,15 @@
     (interactive)
     (org-srs-review-start org-roam-directory))
   (load! "lisp/my-org-srs-grep-prefilter"))
+(map! :map org-mode-map
+      :leader
+      (:prefix ("r" . "review")
+       ";" #'org-srs-review-rate-easy
+       "a" #'org-srs-review-rate-hard
+       "f" #'org-srs-review-rate-again
+       "j" #'org-srs-review-rate-good
+       "r" #'org-roam-srs-review
+       "q" #'org-srs-review-quit))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
